@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Button from '../components/Button';
 
-const Login = () => {
+const Register = () => {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
 
@@ -21,7 +21,7 @@ const Login = () => {
     <div style={styles.background}>
       <div style={styles.loginContainer}>
         <div style={styles.titleContainer}>
-          <h2 style={styles.title}>Login</h2>
+          <h2 style={styles.title}>Registrar</h2>
         </div>
         
         <div style={styles.inputContainer}>
@@ -49,7 +49,7 @@ const Login = () => {
           </form>
         </div>
         <div style={styles.footer}>
-          <Button texto="Entrar" onClick={handleSubmit}></Button>
+          <Button texto="Cadastrar" onClick={handleSubmit}></Button>
           <a style={styles.link}href="#">Não tem conta? se cadastre</a>
         </div>
       </div>
@@ -113,4 +113,4 @@ const styles = {
   }
 };
 
-export default Login;
+export default Register;
