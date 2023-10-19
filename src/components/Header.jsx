@@ -1,12 +1,22 @@
 import { Box, Container } from '@mui/material';
 import SearchAppBar from './SearchBar';
+import AccountMenu from './Profile';
 
 const Header = () => {
   return (
     <Box style={{ display: 'flex', justifyContent: 'center', height: '140px' }}>
       <Box style={{ width: '100vw', height: '65px', backgroundColor: '#fff' }}>
         <Container maxWidth="md">
-          <SearchAppBar />
+          <Box
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              paddingTop: '12px',
+            }}
+          >
+            <SearchAppBar />
+            <AccountMenu />
+          </Box>
         </Container>
       </Box>
     </Box>

@@ -63,7 +63,7 @@ const Feed = () => {
             height: '820px',
             overflowY: 'auto',
             padding: '60px 116px',
-            borderRadius: '8px',
+            borderRadius: '8px 0 0 0',
           }}
           onScroll={handleScroll}
         >
