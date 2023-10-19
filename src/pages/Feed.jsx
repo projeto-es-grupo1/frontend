@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Box, Card, Container, CssBaseline, Typography } from '@mui/material';
 import CardVaga from '../components/CardVaga';
+import Header from '../components/Header';
+// import Header from '../components/Header';
 
 const Feed = () => {
   const [cards, setCards] = useState([]);
@@ -41,12 +43,20 @@ const Feed = () => {
   };
 
   return (
-    <Box style={{ backgroundColor: '#E2E5E9' }}>
+    <Box
+      style={{
+        backgroundColor: '#E2E5E9',
+        height: '100vh',
+        maxWidth: '100vw',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        alignItems: 'flex-end',
+      }}
+    >
+      <Header />
       <Container maxWidth="md">
         <CssBaseline />
-        <Typography variant="h4" gutterBottom style={{ marginBottom: '100px' }}>
-          Feed
-        </Typography>
         <Card
           sx={{ boxShadow: 4 }}
           style={{
