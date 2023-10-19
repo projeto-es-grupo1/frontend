@@ -1,20 +1,62 @@
-import { Button, Card, Typography } from '@mui/material';
-import React from 'react';
+import { Box, Button, Card, Typography } from '@mui/material';
+import { useState } from 'react';
+import ThumbsUpSvg from '../assets/ThumbsUpSvg';
 
-const CardVaga = ({titulo, descricao, localizacao, curtidas}) => {
+// eslint-disable-next-line react/prop-types
+const CardVaga = ({ numero }) => {
+  const [like, setLike] = useState(false);
+  const [likes, setLikes] = useState(25);
+
+  const handleLikeClick = () => {
+    if (like) {
+      setLikes(likes - 1);
+    } else {
+      setLikes(likes + 1);
+    }
+    setLike(!like);
+  };
 
   return (
-    <Card style={{display: 'grid', maxWidth: '600px', padding: '32px', gap: '30px'}}>
-      <Typography style={{gridColumn: '1/3'}}>
-        {titulo} FrontEnd Developer with React and Vite
+    <Card
+      sx={{ boxShadow: 4 }}
+      style={{
+        display: 'grid',
+        maxWidth: '600px',
+        padding: '32px',
+        gap: '30px',
+        marginBottom: '42px',
+      }}
+    >
+      <Typography variant="h6" style={{ gridColumn: '1/3' }}>
+        {numero} FrontEnd Developer with React and Vite
       </Typography>
-      <Typography  style={{gridColumn: '1/3', textAlign: 'justify'}}>
-        {descricao} Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.
+      <Typography
+        variant="body2"
+        style={{ gridColumn: '1/3', textAlign: 'justify' }}
+      >
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+        veniam, quis nostrud.
       </Typography>
-      <Typography  style={{gridColumn: '3/3'}}>
-        {localizacao} Lorem ipsum dolor sit amet, consectetur adipiscing elie.
+      <Typography variant="subtitle2" style={{ gridColumn: '3/3' }}>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elie.
       </Typography>
-      <Button variant='contained'>Enviar Curriculo</Button>
+      <Box
+        style={{
+          display: 'flex',
+          gridColumn: '1/4',
+          justifyContent: 'space-between',
+        }}
+      >
+        <Button variant="contained">Enviar Curriculo</Button>
+        <Box
+          onClick={handleLikeClick}
+          style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+        >
+          {likes}
+          <ThumbsUpSvg color={like ? '#18D0C5' : '#595959'} />
+        </Box>
+      </Box>
     </Card>
   );
 };
