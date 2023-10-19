@@ -1,8 +1,8 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import CardVaga from './components/CardVaga';
 import Feed from './pages/Feed';
+import AccountMenu from './components/Profile';
 
 function App() {
   return (
