@@ -4,6 +4,13 @@ import Button from '../components/Button';
 const Register = () => {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+  const [name, setName] = useState('');
+  const [contaPessoal, setContaPessoal] = useState(false);
+  const [contaInstitucional, setContaInstitucional] = useState(false);
+
+  const handleNameChange = (event) => {
+    setName(event.target.value);
+  };
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -11,6 +18,14 @@ const Register = () => {
 
   const handleSenhaChange = (event) => {
     setSenha(event.target.value);
+  };
+
+  const handleContaPessoalChange = (event) => {
+    setContaPessoal(event.target.checked);
+  };
+
+  const handleContaInstitucionalChange = (event) => {
+    setContaInstitucional(event.target.checked);
   };
 
   const handleSubmit = (event) => {
@@ -26,6 +41,16 @@ const Register = () => {
         
         <div style={styles.inputContainer}>
           <form onSubmit={handleSubmit}>
+          <div className="form-group">
+              <input
+                type="email"
+                id="email"
+                value={name}
+                onChange={handleNameChange}
+                style={styles.input}
+                placeholder='Name'
+              />
+            </div>
             <div className="form-group">
               <input
                 type="email"
@@ -45,12 +70,41 @@ const Register = () => {
                 style={styles.input}
                 placeholder='Senha'
               />
+            </div>            
+            <div className="form-group">
+              <input
+                type="password"
+                id="confirmarSenha"
+                value={senha}
+                onChange={handleSenhaChange}
+                style={styles.input}
+                placeholder='Confirmar Senha'
+              />
+            </div>
+            
+            <div className="form-group" style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <label htmlFor="contaPessoal">Conta pessoal</label>
+              <input
+                type="checkbox"
+                id="contaPessoal"
+                checked={contaPessoal}
+                onChange={handleContaPessoalChange}
+              />
+              
+              <label htmlFor="contaInstitucional">Conta institucional</label>
+              <input
+                type="checkbox"
+                id="contaInstitucional"
+                checked={contaInstitucional}
+                onChange={handleContaInstitucionalChange}
+              />
             </div>
           </form>
         </div>
+        
         <div style={styles.footer}>
           <Button texto="Cadastrar" onClick={handleSubmit}></Button>
-          <a style={styles.link}href="#">Não tem conta? se cadastre</a>
+          <a style={styles.link} href="#">Voltar para login</a>
         </div>
       </div>
     </div>
@@ -102,7 +156,7 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 100,
+    marginBottom: 3,
     marginTop: -150
   },
   link: {
