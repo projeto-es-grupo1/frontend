@@ -1,15 +1,17 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Login from './pages/Login';
-import Home from './pages/Home';
 import Register from './pages/Register';
+import Feed from './pages/Feed';
+import AccountMenu from './components/Profile';
 
 function App() {
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route element={<Home />} path="/" exact />
+          <Route element={<Feed />} path="/feed" exact />
           <Route element={<Login />} path="/login" />
+          <Route element={<Login />} path="*" />
           <Route element={<Register />} path="/register" />
         </Routes>
       </BrowserRouter>
