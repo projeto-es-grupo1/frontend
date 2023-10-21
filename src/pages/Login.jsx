@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Button from '../components/Button';
+import { CssBaseline } from '@mui/material';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -18,48 +19,53 @@ const Login = () => {
   };
 
   return (
-    <div style={styles.background}>
-      <div style={styles.loginContainer}>
-        <div style={styles.titleContainer}>
-          <h2 style={styles.title}>Login</h2>
-        </div>
-        
-        <div style={styles.inputContainer}>
-          <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <input
-                type="email"
-                id="email"
-                value={email}
-                onChange={handleEmailChange}
-                style={styles.input}
-                placeholder='Email'
-              />
-            </div>
-            <div className="form-group">
-              <input
-                type="password"
-                id="senha"
-                value={senha}
-                onChange={handleSenhaChange}
-                style={styles.input}
-                placeholder='Senha'
-              />
-            </div>
-          </form>
-        </div>
-        <div style={styles.footer}>
-          <Button texto="Entrar" onClick={handleSubmit}></Button>
-          <a style={styles.link}href="#">Não tem conta? se cadastre</a>
+    <>
+      <CssBaseline />
+      <div style={styles.background}>
+        <div style={styles.loginContainer}>
+          <div style={styles.titleContainer}>
+            <h2 style={styles.title}>Login</h2>
+          </div>
+
+          <div style={styles.inputContainer}>
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <input
+                  type="email"
+                  id="email"
+                  value={email}
+                  onChange={handleEmailChange}
+                  style={styles.input}
+                  placeholder="Email"
+                />
+              </div>
+              <div className="form-group">
+                <input
+                  type="password"
+                  id="senha"
+                  value={senha}
+                  onChange={handleSenhaChange}
+                  style={styles.input}
+                  placeholder="Senha"
+                />
+              </div>
+            </form>
+          </div>
+          <div style={styles.footer}>
+            <Button texto="Entrar" onClick={handleSubmit}></Button>
+            <a style={styles.link} href="#">
+              Não tem conta? se cadastre
+            </a>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
 const styles = {
   background: {
-    backgroundColor: '#e0e0e0',
+    backgroundColor: '#E2E5E9',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -76,10 +82,10 @@ const styles = {
     boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
     textAlign: 'center',
     width: 419,
-    height: 562
+    height: 562,
   },
   title: {
-    color: '#3F3F3F'
+    color: '#3F3F3F',
   },
   inputContainer: {
     marginTop: -100,
@@ -103,14 +109,14 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'space-between',
     marginBottom: 100,
-    marginTop: -150
+    marginTop: -150,
   },
   link: {
-    marginTop: 20, 
+    marginTop: 20,
     color: '#5972F5',
     fontWeight: 400,
-    fontSize: 14
-  }
+    fontSize: 14,
+  },
 };
 
 export default Login;
