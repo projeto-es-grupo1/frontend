@@ -9,6 +9,7 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
+import CardTravelOutlinedIcon from '@mui/icons-material/CardTravelOutlined';
 
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -74,6 +75,13 @@ export default function AccountMenu() {
       >
         <MenuItem onClick={handleClose}>
           <Avatar /> Minha Conta
+        </MenuItem>
+        <MenuItem onClick={handleClose}>
+          <CardTravelOutlinedIcon
+            fontSize="medium"
+            sx={{ marginRight: '12px', color: '#B3B3B3' }}
+          />{' '}
+          Feed
         </MenuItem>
         <Divider />
         <MenuItem onClick={handleClose}>
