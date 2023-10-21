@@ -1,5 +1,4 @@
 import { styled, alpha } from '@mui/material/styles';
-import Toolbar from '@mui/material/Toolbar';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 
