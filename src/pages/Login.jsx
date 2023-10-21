@@ -1,10 +1,17 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Button from '../components/Button';
 import { CssBaseline } from '@mui/material';
+import { AuthContext } from '../context/authContext';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+
+  const { dispatch } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -14,9 +21,26 @@ const Login = () => {
     setSenha(event.target.value);
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-  };
+
+  const handleSubmit = async (e) => {
+      e.preventDefault();
+      dispatch({ type: "LOGIN_START" });
+      try {
+          const info = {
+              "username": `${email}`,
+              "password": `${senha}`
+          }
+
+          const res = await axios.post("http://localhost:8800/api/auth/login", info);
+          dispatch({ type: "LOGIN_SUCCESS", payload: res.data.details });
+          navigate("/")
+          toast.success("You are logged in!")
+      } catch (err) {
+          console.log(err.message);
+          toast.error("Usuário não encontrado(a) !");
+          dispatch({ type: "LOGIN_FAILURE", payload: err.response.data });
+      }
+  }
 
   return (
     <>
@@ -53,7 +77,7 @@ const Login = () => {
           </div>
           <div style={styles.footer}>
             <Button texto="Entrar" onClick={handleSubmit}></Button>
-            <a style={styles.link} href="#">
+            <a style={styles.link} href="/register">
               Não tem conta? se cadastre
             </a>
           </div>

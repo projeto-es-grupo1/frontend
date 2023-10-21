@@ -4,19 +4,28 @@ import Register from './pages/Register';
 import Feed from './pages/Feed';
 import Institution from './pages/Institution';
 import Perfil from './pages/Perfil';
+import { useContext } from 'react';
+import { AuthContext, AuthContextProvider } from "./context/authContext"
 
 function App() {
+  const { user } = useContext(AuthContext);
+
   return (
     <>
       <BrowserRouter>
-        <Routes>
-          <Route element={<Feed />} path="/feed" />
-          <Route element={<Login />} path="/login" />
-          <Route element={<Login />} path="*" />
-          <Route element={<Register />} path="/register" />
-          <Route element={<Institution />} path="/perfilorg" />
-          <Route element={<Perfil />} path="/perfilpessoal" />
-        </Routes>
+        <AuthContextProvider>
+          <Routes>
+            { user != null ? <Route element={<Feed />} path="/feed" /> : <Route element={<Login />} path="/login" /> }
+            { user != null ? <Route element={<Institution />} path="/perfilorg" /> : <Route element={<Login />} path="/login" /> }
+            { user != null && !user.isLab ? <Route element={<Perfil />} path="/perfil" /> : <Route element={<Login />} path="/login" /> }
+            { user != null ? <Route element={<Feed />} path="*" /> : <Route element={<Login />} path="/*" /> }
+
+            <Route element={<Register />} path="/register" />  
+            <Route element={<Login />} path="/login" />
+          
+          </Routes>
+        </AuthContextProvider>
+        
       </BrowserRouter>
     </>
   );

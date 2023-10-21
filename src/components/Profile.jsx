@@ -10,16 +10,40 @@ import Tooltip from '@mui/material/Tooltip';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import CardTravelOutlinedIcon from '@mui/icons-material/CardTravelOutlined';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/authContext';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [data, setData] = React.useState({});
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
+  const navigate = useNavigate();
+  const { user, dispatch } = React.useContext(AuthContext);
+
+  const handleLogout = async (e) => {
+      e.preventDefault();
+      dispatch({ type: "LOGOUT" });
+      navigate("/login")
+  }
+
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleAccount = () => {
+    navigate("/perfil");
+  };
+
+  const handleFeed = () => {
+    navigate("/feed");
+  };
+
   return (
     <React.Fragment>
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
@@ -33,7 +57,7 @@ export default function AccountMenu() {
             aria-expanded={open ? 'true' : undefined}
           >
             <Avatar sx={{ width: 32, height: 32, bgcolor: '#1876D0' }}>
-              V
+              { user.username[0].toUpperCase() }
             </Avatar>
           </IconButton>
         </Tooltip>
@@ -73,10 +97,10 @@ export default function AccountMenu() {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={handleAccount}>
           <Avatar /> Minha Conta
         </MenuItem>
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={handleFeed}>
           <CardTravelOutlinedIcon
             fontSize="medium"
             sx={{ marginRight: '12px', color: '#B3B3B3' }}
@@ -90,7 +114,7 @@ export default function AccountMenu() {
           </ListItemIcon>
           Configurações
         </MenuItem>
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={handleLogout}>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>

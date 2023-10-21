@@ -1,13 +1,21 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Button from '../components/Button';
 import { CssBaseline } from '@mui/material';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/authContext';
+import { toast } from 'react-toastify';
 
 const Register = () => {
   const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
+  const [senha1, setSenha1] = useState('');
+  const [senha2, setSenha2] = useState('');
   const [name, setName] = useState('');
   const [contaPessoal, setContaPessoal] = useState(false);
   const [contaInstitucional, setContaInstitucional] = useState(false);
+
+  const { dispatch } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleNameChange = (event) => {
     setName(event.target.value);
@@ -17,8 +25,12 @@ const Register = () => {
     setEmail(event.target.value);
   };
 
-  const handleSenhaChange = (event) => {
-    setSenha(event.target.value);
+  const handleSenha1Change = (event) => {
+    setSenha1(event.target.value);
+  };
+
+  const handleSenha2Change = (event) => {
+    setSenha2(event.target.value);
   };
 
   const handleContaPessoalChange = (event) => {
@@ -29,9 +41,27 @@ const Register = () => {
     setContaInstitucional(event.target.checked);
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (senha1 != senha2) {
+      toast.error("Senhas não conferem!");
+    } else {
+      try {
+          const info = {
+            "username": `${email}`,
+            "password": `${senha1}`,
+            "isLab": contaPessoal == true ? false : true
+          }
+          await axios.post("http://localhost:8800/api/auth/register", info);
+          navigate("/login")
+          toast.success("Usuário registrado!")
+      } catch (err) {
+          toast.error(err.message);
+      }
+    }
+    
+}
 
   return (
     <>
@@ -61,15 +91,15 @@ const Register = () => {
                   value={email}
                   onChange={handleEmailChange}
                   style={styles.input}
-                  placeholder="Email"
+                  placeholder="Username"
                 />
               </div>
               <div className="form-group">
                 <input
                   type="password"
                   id="senha"
-                  value={senha}
-                  onChange={handleSenhaChange}
+                  value={senha1}
+                  onChange={handleSenha1Change}
                   style={styles.input}
                   placeholder="Senha"
                 />
@@ -78,8 +108,8 @@ const Register = () => {
                 <input
                   type="password"
                   id="confirmarSenha"
-                  value={senha}
-                  onChange={handleSenhaChange}
+                  value={senha2}
+                  onChange={handleSenha2Change}
                   style={styles.input}
                   placeholder="Confirmar Senha"
                 />
@@ -110,7 +140,7 @@ const Register = () => {
 
           <div style={styles.footer}>
             <Button texto="Cadastrar" onClick={handleSubmit}></Button>
-            <a style={styles.link} href="#">
+            <a style={styles.link} href="/login">
               Voltar para login
             </a>
           </div>
