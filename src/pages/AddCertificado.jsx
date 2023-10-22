@@ -6,39 +6,47 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-const Login = () => {
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
+const AddCertificado = () => {
+  const [link, setLink] = useState('');
+  const [titulo, setTitulo] = useState('');
+  const [area, setArea] = useState('');
 
-  const { dispatch } = useContext(AuthContext);
+  const { user , token } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
+  const handleLinkChange = (event) => {
+    setLink(event.target.value);
   };
 
-  const handleSenhaChange = (event) => {
-    setSenha(event.target.value);
+  const handleTituloChange = (event) => {
+    setTitulo(event.target.value);
+  };
+
+  const handleAreaChange = (event) => {
+    setArea(event.target.value);
   };
 
 
   const handleSubmit = async (e) => {
       e.preventDefault();
-      dispatch({ type: "LOGIN_START" });
       try {
           const info = {
-              "username": `${email}`,
-              "password": `${senha}`
+              "user": user._id,
+              "link_certificado": `${link}`,
+              "titulo": `${titulo}`,
+              "area": `${area}`
           }
 
-          const res = await axios.post("http://localhost:8800/api/auth/login", info);
-          dispatch({ type: "LOGIN_SUCCESS", payload: res.data.details });
-          navigate("/feed")
-          toast.success("You are logged in!")
+          const headers = {
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MzUwMjI5NjdmNWZmZGQwYzBhNzI2YiIsImlzTGFiIjp0cnVlLCJpYXQiOjE2OTc5NzM2ODR9.TznODMfyWLU1RVzHQemwiBbk-Ff3hsWHyhJD1uAws9w`,
+          };
+          console.log(headers);
+          await axios.post(`http://localhost:8800/api/certificados/${user._id}`, info, { headers });
+          
+          navigate("/perfil")
+          toast.success("Certificado adicionado!")
       } catch (err) {
-          console.log(err.message);
-          toast.error("Usuário não encontrado(a) !");
-          dispatch({ type: "LOGIN_FAILURE", payload: err.response.data });
+          toast.error(err.message);
       }
   }
 
@@ -48,38 +56,45 @@ const Login = () => {
       <div style={styles.background}>
         <div style={styles.loginContainer}>
           <div style={styles.titleContainer}>
-            <h2 style={styles.title}>Login</h2>
+            <h2 style={styles.title}>Adicionar Certificado</h2>
           </div>
 
           <div style={styles.inputContainer}>
             <form onSubmit={handleSubmit}>
               <div className="form-group">
                 <input
-                  type="email"
+                  type="text"
                   id="email"
-                  value={email}
-                  onChange={handleEmailChange}
+                  value={link}
+                  onChange={handleLinkChange}
                   style={styles.input}
-                  placeholder="Email"
+                  placeholder="Link do certificado"
                 />
               </div>
               <div className="form-group">
                 <input
-                  type="password"
+                  type="text"
                   id="senha"
-                  value={senha}
-                  onChange={handleSenhaChange}
+                  value={titulo}
+                  onChange={handleTituloChange}
                   style={styles.input}
-                  placeholder="Senha"
+                  placeholder="Titulo"
+                />
+              </div>
+              <div className="form-group">
+                <input
+                  type="text"
+                  id="area"
+                  value={area}
+                  onChange={handleAreaChange}
+                  style={styles.input}
+                  placeholder="Área"
                 />
               </div>
             </form>
           </div>
           <div style={styles.footer}>
-            <Button texto="Entrar" onClick={handleSubmit}></Button>
-            <a style={styles.link} href="/register">
-              Não tem conta? se cadastre
-            </a>
+            <Button texto="Adicionar" onClick={handleSubmit}></Button>
           </div>
         </div>
       </div>
@@ -143,4 +158,4 @@ const styles = {
   },
 };
 
-export default Login;
+export default AddCertificado;
