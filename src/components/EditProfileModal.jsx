@@ -29,7 +29,7 @@ const EditProfileModal = ({ open, onClose, userData }) => {
           name="nome"
           value={updatedData.nome}
           onChange={handleInputChange}
-          fullWidth // Isso fará o campo ocupar toda a largura disponível
+          fullWidth
         />
         <TextField
           label="Email"
@@ -38,7 +38,6 @@ const EditProfileModal = ({ open, onClose, userData }) => {
           onChange={handleInputChange}
           fullWidth
         />
-        {/* Adicione mais campos do formulário conforme necessário */}
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancelar</Button>
