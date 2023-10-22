@@ -3,14 +3,38 @@ import { useForm, Controller } from 'react-hook-form';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
+import { AuthContext } from '../context/authContext';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import axios from 'axios';
 
-function EditarPerfilForm() {
+function EditarPerfilForm({ id }) {
   const { handleSubmit, control, reset } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
-    // Logica
-  };
+  const { user } = React.useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const onSubmit = async (data) => {
+    const info = {
+      "user": user._id,
+      "nome" : data.name,
+      "email" : data.contact,
+      "habilidades" : data.competencies.split(",")
+    }
+
+    if (user != null) {
+        try {
+          navigate("/")
+          await axios.put(`http://localhost:8800/api/perfil/${id}`, info);
+          toast.success("Perfil atualizado!")
+        } catch (err) {
+          //toast.error("Algum erro ocorreu!");
+          toast.error(err.message)
+        }
+    } else {
+        navigate("/login");
+    }
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -25,7 +49,7 @@ function EditarPerfilForm() {
             control={control}
             defaultValue=""
             render={({ field }) => (
-              <TextField {...field} label="Nome" fullWidth variant="outlined" />
+              <TextField {...field} label="Nome" fullWidth variant="outlined" required/>
             )}
           />
         </Grid>
@@ -40,6 +64,7 @@ function EditarPerfilForm() {
                 label="Competências"
                 fullWidth
                 variant="outlined"
+                required
               />
             )}
           />
@@ -55,6 +80,7 @@ function EditarPerfilForm() {
                 label="Contato"
                 fullWidth
                 variant="outlined"
+                required
               />
             )}
           />

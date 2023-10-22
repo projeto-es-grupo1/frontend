@@ -3,14 +3,39 @@ import { useForm, Controller } from 'react-hook-form';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
+import { AuthContext } from '../context/authContext';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const NovaVagaForm = () => {
   const { handleSubmit, control } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
-    // logica
-  };
+  const { user } = React.useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const onSubmit = async (data) => {
+    const info = {
+      "user": user._id,
+      "link_certificado": data.link,
+      "titulo": data.title,
+      "area": data.description,
+      "duracao": data.duracao
+    }
+
+    
+    if (user != null) {
+      try {
+            await axios.post(`http://localhost:8800/api/certificados/${user._id}`, info);
+            toast.success("Certificado adicionado!");
+            navigate("/");
+          } catch (err) {
+            toast.error(err.message)
+          }
+      } else {
+          navigate("/login");
+      }
+    };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -87,6 +112,7 @@ const NovaVagaForm = () => {
             color="primary"
             size="large"
             fullWidth
+            
           >
             Publicar Certificado
           </Button>

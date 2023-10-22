@@ -98,7 +98,7 @@ const Institution = () => {
               <FormModalLink
                 link={'Editar Perfil'}
                 formsTitle={'Editar Perfil'}
-                forms={<EditarPerfilForm />}
+                forms={<EditarPerfilForm id={data._id}/>}
               />
             </Card>
 
