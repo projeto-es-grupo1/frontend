@@ -26,7 +26,7 @@ const Feed = () => {
     setLoading(true);
     setTimeout(() => {
       const newCards = Array.from(
-        { length: 10 },
+        { length: 5 },
         (_, index) => `Card ${cards.length + index + 1}`,
       );
       setCards((prevCards) => [...prevCards, ...newCards]);
@@ -34,11 +34,20 @@ const Feed = () => {
     }, 1000);
   };
 
+  let isLoading = false;
+
   const handleScroll = (e) => {
     const { scrollTop, clientHeight, scrollHeight } = e.currentTarget;
+    const marginOfError = 100;
 
-    if (scrollHeight - scrollTop === clientHeight) {
-      loadMoreData();
+    if (
+      !isLoading &&
+      scrollHeight - scrollTop <= clientHeight + marginOfError
+    ) {
+      isLoading = true; // Defina a variável de controle para evitar chamadas repetidas
+      loadMoreData().then(() => {
+        isLoading = false; // Redefina a variável de controle após o carregamento de dados
+      });
     }
   };
 
@@ -46,7 +55,7 @@ const Feed = () => {
     <Box
       style={{
         backgroundColor: '#E2E5E9',
-        height: '100vh',
+        minHeight: '100vh',
         maxWidth: '100vw',
         display: 'flex',
         flexDirection: 'column',
@@ -58,9 +67,10 @@ const Feed = () => {
       <Container maxWidth="md">
         <CssBaseline />
         <Card
-          sx={{ boxShadow: 4 }}
+          sx={{ boxShadow: 4, position: 'fixed', bottom: 0 }}
           style={{
-            height: '820px',
+            maxHeight: '86%',
+
             overflowY: 'auto',
             padding: '60px 116px',
             borderRadius: '8px 0 0 0',
@@ -70,7 +80,7 @@ const Feed = () => {
           {cards.map((_, index) => (
             <CardVaga key={index} numero={index} />
           ))}
-          {loading && <Typography>Loading...</Typography>}
+          {loading && <Typography>Carregando...</Typography>}
         </Card>
       </Container>
     </Box>
