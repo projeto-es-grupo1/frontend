@@ -1,6 +1,5 @@
 import {
   Avatar,
-  Button,
   Card,
   Container,
   CssBaseline,
@@ -9,6 +8,8 @@ import {
 } from '@mui/material';
 import { Box } from '@mui/system';
 import Header from '../components/Header';
+import FormModal from '../components/FormModal';
+import NovoCertificadoForm from '../components/NovoCertificadoForm';
 
 const Institution = () => {
   const handleClick = (event) => {
@@ -90,9 +91,12 @@ const Institution = () => {
                 }}
               >
                 <Typography variant="h6">Certificações</Typography>
-                <Button size="large" variant="contained" onClick={handleClick}>
-                  Adicionar
-                </Button>
+
+                <FormModal
+                  botao={'Adicionar'}
+                  formsTitle={'Adicionar Certificado'}
+                  forms={<NovoCertificadoForm />}
+                />
               </Box>
 
               {/* renderizar cards aqui */}
