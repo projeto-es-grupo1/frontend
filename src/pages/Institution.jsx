@@ -9,6 +9,10 @@ import {
 } from '@mui/material';
 import { Box } from '@mui/system';
 import Header from '../components/Header';
+import FormModal from '../components/FormModal';
+import NovaVagaForm from '../components/NovaVagaForm';
+import FormModalLink from '../components/FormModalLink';
+import EditarInstituicaoForm from '../components/EditarInstituicaoForm';
 
 const Institution = () => {
   const handleClick = (event) => {
@@ -91,9 +95,11 @@ const Institution = () => {
                 </Box>
               </Box>
 
-              <Link style={{}} href="#" underline="hover">
-                {'Editar Perfil'}
-              </Link>
+              <FormModalLink
+                link={'Editar Perfil'}
+                formsTitle={'Editar Perfil'}
+                forms={<EditarInstituicaoForm />}
+              />
             </Card>
 
             <Card
@@ -113,10 +119,13 @@ const Institution = () => {
                   alignItems: 'center',
                 }}
               >
-                <Typography variant="h6">Certificações</Typography>
-                <Button size="large" variant="contained" onClick={handleClick}>
-                  Adicionar
-                </Button>
+                <Typography variant="h6">Vagas Publicadas</Typography>
+
+                <FormModal
+                  botao={'Publicar Vaga'}
+                  formsTitle={'Nova Vaga'}
+                  forms={<NovaVagaForm />}
+                />
               </Box>
 
               {/* renderizar cards aqui */}

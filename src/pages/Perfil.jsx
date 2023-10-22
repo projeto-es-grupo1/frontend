@@ -1,6 +1,5 @@
 import {
   Avatar,
-  Button,
   Card,
   Container,
   CssBaseline,
@@ -9,20 +8,17 @@ import {
 } from '@mui/material';
 import { Box } from '@mui/system';
 import Header from '../components/Header';
-import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/authContext';
 import React from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-
+import FormModal from '../components/FormModal';
+import NovoCertificadoForm from '../components/NovoCertificadoForm';
+import FormModalLink from '../components/FormModalLink';
+import EditarPerfilForm from '../components/EditarPerfilForm';
 const Institution = () => {
-  const handleClick = () => {
-    navigate("/perfil/add_certificado");
-  };
-
   const [data, setData] = React.useState({});
 
-  const navigate = useNavigate();
   const { user } = React.useContext(AuthContext);
 
 
@@ -99,10 +95,11 @@ const Institution = () => {
                   telefone: { data.telefone != "" ? data.telefone : "Não definido!"}
                 </Link>
               </Box>
-
-              <Link style={{}} href="#" underline="hover">
-                {'Editar Perfil'}
-              </Link>
+              <FormModalLink
+                link={'Editar Perfil'}
+                formsTitle={'Editar Perfil'}
+                forms={<EditarPerfilForm />}
+              />
             </Card>
 
             <Card
@@ -123,9 +120,12 @@ const Institution = () => {
                 }}
               >
                 <Typography variant="h6">Certificações</Typography>
-                <Button size="large" variant="contained" onClick={handleClick}>
-                  Adicionar
-                </Button>
+
+                <FormModal
+                  botao={'Adicionar'}
+                  formsTitle={'Adicionar Certificado'}
+                  forms={<NovoCertificadoForm />}
+                />
               </Box>
 
               {/* renderizar cards aqui */}
