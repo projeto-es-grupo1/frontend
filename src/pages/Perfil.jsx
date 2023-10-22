@@ -16,8 +16,8 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 
 const Institution = () => {
-  const handleClick = (event) => {
-    event.preventDefault();
+  const handleClick = () => {
+    navigate("/perfil/add_certificado");
   };
 
   const [data, setData] = React.useState({});
