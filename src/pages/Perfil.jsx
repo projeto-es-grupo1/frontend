@@ -10,6 +10,8 @@ import { Box } from '@mui/system';
 import Header from '../components/Header';
 import FormModal from '../components/FormModal';
 import NovoCertificadoForm from '../components/NovoCertificadoForm';
+import FormModalLink from '../components/FormModalLink';
+import EditarPerfilForm from '../components/EditarPerfilForm';
 
 const Institution = () => {
   const handleClick = (event) => {
@@ -67,10 +69,11 @@ const Institution = () => {
                   {'Informação de contato'}
                 </Link>
               </Box>
-
-              <Link style={{}} href="#" underline="hover">
-                {'Editar Perfil'}
-              </Link>
+              <FormModalLink
+                link={'Editar Perfil'}
+                formsTitle={'Editar Perfil'}
+                forms={<EditarPerfilForm />}
+              />
             </Card>
 
             <Card
