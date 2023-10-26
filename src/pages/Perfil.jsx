@@ -99,11 +99,10 @@ const Institution = () => {
                   {data.telefone != '' ? data.telefone : 'Não definido!'}
                 </Link>
               </Box>
-              <FormModalLink
-                link={'Editar Perfil'}
-                formsTitle={'Editar Perfil'}
-                forms={<EditarPerfilForm />}
-              />
+
+              <Link underline="hover" sx={{ cursor: 'pointer' }}>
+                Editar Perfil
+              </Link>
             </Card>
 
             <Card
