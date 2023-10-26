@@ -16,23 +16,25 @@ import FormModal from '../components/FormModal';
 import NovoCertificadoForm from '../components/NovoCertificadoForm';
 import FormModalLink from '../components/FormModalLink';
 import EditarPerfilForm from '../components/EditarPerfilForm';
+import CardCertificacao from '../components/CardCertificacao';
 const Institution = () => {
   const [data, setData] = React.useState({});
 
   const { user } = React.useContext(AuthContext);
 
-
   const getUserData = async () => {
-    // modifyLoad({ type: "LOADING_START" }); 
+    // modifyLoad({ type: "LOADING_START" });
     if (user != null) {
       try {
-        const res = await axios.get(`http://localhost:8800/api/perfil/${user._id}`);
+        const res = await axios.get(
+          `http://localhost:8800/api/perfil/${user._id}`,
+        );
         setData(res.data[0]);
       } catch (err) {
         toast.error(err.message);
       }
     }
-    // modifyLoad({ type: "LOADING_END" }); 
+    // modifyLoad({ type: "LOADING_END" });
   };
 
   React.useEffect(() => {
@@ -45,11 +47,12 @@ const Institution = () => {
       <Box
         style={{
           backgroundColor: '#E2E5E9',
-          height: '100vh',
+          height: '100%',
           maxWidth: '100vw',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+          overflowX: 'hidden',
         }}
       >
         <Header />
@@ -81,18 +84,19 @@ const Institution = () => {
                   }}
                 />
                 <Typography variant="h5" sx={{ marginBottom: '16px' }}>
-                  { data.nome }
+                  {data.nome}
                 </Typography>
                 <Typography variant="subtitle1" sx={{ marginBottom: '10px' }}>
                   {data.habilidades && data.habilidades.length > 0
                     ? data.habilidades.join(' | ')
-                    : "Adicione algumas habilidades!"}
+                    : 'Adicione algumas habilidades!'}
                 </Typography>
                 <Link href="#" underline="hover">
-                  email: { data.email != "" ? data.email : "Não definido!"}
+                  email: {data.email != '' ? data.email : 'Não definido!'}
                 </Link>
                 <Link href="#" underline="hover">
-                  telefone: { data.telefone != "" ? data.telefone : "Não definido!"}
+                  telefone:{' '}
+                  {data.telefone != '' ? data.telefone : 'Não definido!'}
                 </Link>
               </Box>
               <FormModalLink
@@ -106,9 +110,10 @@ const Institution = () => {
               sx={{ boxShadow: 4 }}
               style={{
                 display: 'flex',
-                flexDirection: 'row',
+                flexDirection: 'column',
                 padding: '32px 50px',
                 width: '100%',
+                gap: '64px',
               }}
             >
               <Box
@@ -128,7 +133,8 @@ const Institution = () => {
                 />
               </Box>
 
-              {/* renderizar cards aqui */}
+              <CardCertificacao />
+              <CardCertificacao />
             </Card>
           </Box>
         </Container>
