@@ -55,7 +55,7 @@ const EditarPerfil = () => {
           alignItems: 'center',
         }}
       >
-        <Header style={{ marginBottom: '32px' }} />
+        <Header />
         <Container maxWidth="md">
           <Card sx={{ boxShadow: 4 }} style={{ padding: '64px' }}>
             <form onSubmit={handleSubmit(onSubmit)}>
