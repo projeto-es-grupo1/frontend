@@ -9,6 +9,7 @@ import { AuthContext, AuthContextProvider } from './context/authContext';
 import AddCertificado from './pages/AddCertificado';
 import EditarPerfil from './pages/EditarPerfil';
 import NovaVaga from './pages/NovaVaga';
+import VisualizarVaga from './pages/VisualizarVaga';
 
 function App() {
   const { user } = useContext(AuthContext);
@@ -49,6 +50,7 @@ function App() {
 
             <Route element={<EditarPerfil />} path="/editarperfil" />
             <Route element={<NovaVaga />} path="/novaVaga" />
+            <Route element={<VisualizarVaga />} path="/vaga" />
 
             <Route element={<Register />} path="/register" />
             <Route element={<Login />} path="/login" />
