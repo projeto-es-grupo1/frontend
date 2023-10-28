@@ -25,6 +25,7 @@ const NovaVaga = () => {
   const getVagaData = async () => {
     if (user != null) {
       try {
+        console.log(lab+"/"+vaga);
         const res = await axios.get(
           `http://localhost:8800/api/vagas/${lab}/${vaga}`,
         );
@@ -80,8 +81,8 @@ const NovaVaga = () => {
                 marginBottom: '2px',
               }}
             >
-              <Typography variant="h4">{ data.titulo }</Typography>
-              <Typography variant="body1">{ data.carga_horaria } Horas/Semana</Typography>
+              <Typography variant="h4">{ data && data.titulo ? data.titulo : "Carregando"}</Typography>
+              <Typography variant="body1">{  data && data.carga_horaria ? data.carga_horaria : "Carregando" } Horas/Semana</Typography>
             </Box>
             <Typography
               sx={{ marginBottom: '10px' }}
@@ -98,7 +99,7 @@ const NovaVaga = () => {
                 marginBottom: '16px',
               }}
             >
-              <Typography variant="body1">{ data.qtd_vagas } vagas</Typography>
+              <Typography variant="body1">{ data && data.qtd_vagas ? data.qtd_vagas : "x" } vagas</Typography>
               <div
                 style={{
                   height: '6px',
@@ -107,7 +108,7 @@ const NovaVaga = () => {
                   borderRadius: '100px',
                 }}
               />
-              <Typography variant="body1">R$ {data.bolsa }</Typography>
+              <Typography variant="body1">R$ { data && data.bolsa ? data.bolsa : "x"}</Typography>
             </Box>
             <Typography sx={{ marginBottom: '16px' }} variant="body1">
               Área: { data && data.area ? data.area : "Área não definida!" }
@@ -118,7 +119,7 @@ const NovaVaga = () => {
               variant="body2"
               color="#6B6A6B"
             >
-              { data.descricao }
+              { data && data.descricao ? data.descricao : "Carregando" }
             </Typography>
             <Typography variant="subtitle2" fontSize="1.05rem">
               Habilidades requeridas:

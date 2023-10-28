@@ -17,6 +17,7 @@ import NovoCertificadoForm from '../components/NovoCertificadoForm';
 import FormModalLink from '../components/FormModalLink';
 import EditarPerfilForm from '../components/EditarPerfilForm';
 import CardCertificacao from '../components/CardCertificacao';
+import CardVaga from '../components/CardVaga';
 const Institution = () => {
   const [data, setData] = React.useState({});
 
@@ -36,6 +37,10 @@ const Institution = () => {
     }
     // modifyLoad({ type: "LOADING_END" });
   };
+
+  React.useEffect(() => {
+    getUserData();
+  }, [user]);
 
   React.useEffect(() => {
     getUserData();
@@ -132,6 +137,15 @@ const Institution = () => {
                 />
               </Box>
 
+              <Box style={{ display: 'flex', flexDirection: 'column' }}>
+                {/* {vagas && vagas.length > 0 ? (
+                  vagas.map((vaga, index) => (
+                    <CardVaga vaga={vaga} key={index} />
+                  ))
+                ) : (
+                  <Typography variant="body2">Nenhuma vaga publicada ainda.</Typography>
+                )} */}
+              </Box>
               <CardCertificacao />
               <CardCertificacao />
             </Card>

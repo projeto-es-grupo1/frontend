@@ -100,7 +100,7 @@ const EditarVaga = () => {
       };
 
       await axios.put(`http://localhost:8800/api/vagas/${vaga}`, info);
-      toast.success("Vaga criada com sucesso!");
+      toast.success("Vaga Atualizada com sucesso!");
       navigate("/perfil");
     } catch (err) {
       toast.error(err.message);

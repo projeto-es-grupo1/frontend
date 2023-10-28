@@ -1,19 +1,22 @@
-import { Box, Button, Card, Typography } from '@mui/material';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
+import {
+  Box,
+  Button,
+  Card,
+  Typography
+} from '@mui/material';
 import ThumbsUpSvg from '../assets/ThumbsUpSvg';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/authContext';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
-// eslint-disable-next-line react/prop-types
 const CardVaga = ({ vaga }) => {
-  const [like, setLike] = useState(false);
-  const [likes, setLikes] = useState(25);
 
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
 
   const handleClick = () => {
-    navigate(`/perfil/vaga/${user._id}/${vaga._id}`);
+    navigate(`/perfil/vaga/${vaga.lab}/${vaga._id}`);
   };
 
   return (
@@ -22,22 +25,25 @@ const CardVaga = ({ vaga }) => {
       style={{
         display: 'grid',
         maxWidth: '600px',
+        minWidth: '80%',
         padding: '32px',
+        justifyContent: 'center',
+        margin: '1rem auto',
         gap: '30px',
         marginBottom: '42px',
       }}
     >
       <Typography variant="h6" style={{ gridColumn: '1/3' }}>
-        { vaga.titulo }
+        {vaga.titulo}
       </Typography>
       <Typography
         variant="body2"
         style={{ gridColumn: '1/3', textAlign: 'justify' }}
       >
-        { vaga.descricao }
+        {vaga.descricao}
       </Typography>
       <Typography variant="subtitle2" style={{ gridColumn: '3/3' }}>
-        { vaga.localizacao }
+        {vaga.localizacao}
       </Typography>
       <Box
         style={{
@@ -46,7 +52,17 @@ const CardVaga = ({ vaga }) => {
           justifyContent: 'space-between',
         }}
       >
-        <Button variant="contained" onClick={handleClick}>Ver Vaga</Button>
+        <Button variant="contained" onClick={handleClick}>
+          Ver Vaga
+        </Button>
+      </Box>
+      <Box
+        style={{
+          display: 'flex',
+          gridColumn: '4/4',
+          justifyContent: 'space-between',
+        }}
+      >
       </Box>
     </Card>
   );

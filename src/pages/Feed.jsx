@@ -1,12 +1,36 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Card, Container, CssBaseline, Typography } from '@mui/material';
 import CardVaga from '../components/CardVaga';
 import Header from '../components/Header';
+import { AuthContext } from '../context/authContext';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 // import Header from '../components/Header';
 
 const Feed = () => {
+  const { user } = React.useContext(AuthContext);
+
   const [cards, setCards] = useState([]);
+  const [vagas, setVagas] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const getVagasData = async () => {
+    if (user != null) {
+      try {
+        const res = await axios.get(
+          `http://localhost:8800/api/vagas`,
+        );
+        setVagas(res.data);
+        console.log(res.data);
+      } catch (err) {
+        toast.error(err.message);
+      }
+    }
+  };
+
+  React.useEffect(() => {
+    getVagasData();
+  }, [user]);
 
   useEffect(() => {
     loadInitialData();
@@ -70,17 +94,19 @@ const Feed = () => {
           sx={{ boxShadow: 4, position: 'fixed', bottom: 0 }}
           style={{
             maxHeight: '86%',
-
             overflowY: 'auto',
             padding: '60px 116px',
             borderRadius: '8px 0 0 0',
           }}
           onScroll={handleScroll}
         >
-          {cards.map((_, index) => (
-            <CardVaga key={index} numero={index} />
-          ))}
-          {loading && <Typography>Carregando...</Typography>}
+                {vagas && vagas.length > 0 ? (
+                  vagas.map((vaga, index) => (
+                    <CardVaga vaga={vaga} key={index} />
+                  ))
+                ) : (
+                  <Typography variant="body2">Nenhuma vaga publicada ainda.</Typography>
+                )}
         </Card>
       </Container>
     </Box>
