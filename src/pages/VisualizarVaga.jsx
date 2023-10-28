@@ -179,19 +179,28 @@ const NovaVaga = () => {
             <Box
               sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}
             >
-              { user && user.isLab ? 
+              { user && user.isLab && user._id == lab ? 
                 <Button variant="contained" size="large" onClick={deletarVaga}>
                   Deletar vaga
                 </Button>
               : 
-                <Button variant="contained" size="large" onClick={demonstrarInteresse}>
-                  { interesse && interesse.length == 0 ? "Demonstrar Interesse" : "Cancelar" }
-                </Button>
+                <></>
               }
-              { user && user.isLab ? 
+              { user && !user.isLab ? <Button variant="contained" size="large" onClick={demonstrarInteresse}>
+                  { interesse && interesse.length == 0 ? "Demonstrar Interesse" : "Cancelar" }
+                </Button> : <></>}
+              { user && user.isLab && user._id == lab ? 
                 <Button style={{marginLeft: "1rem"}} variant="contained" size="large" onClick={handleClick}>
                   Atualizar vaga
                 </Button>
+              : 
+                <></>
+              }
+
+              { user && user.isLab && user._id != lab ? 
+                <Typography sx={{ marginBottom: '24px' }}>
+                  Somente contas pessoais podem demonstrar interesse!  
+                </Typography>
               : 
                 <></>
               }

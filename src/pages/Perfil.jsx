@@ -115,10 +115,13 @@ const Institution = () => {
                   {data.telefone != '' ? data.telefone : 'Não definido!'}
                 </Link>
               </Box>
-
-              <Link underline="hover" sx={{ cursor: 'pointer' }}>
-                Editar Perfil
-              </Link>
+              
+              <a href={"/editar/"+data._id}>
+                <Link underline="hover" sx={{ cursor: 'pointer' }}>
+                  Editar Perfil
+                </Link>
+              </a>
+              
             </Card>
 
             <Card

@@ -9,7 +9,7 @@ function EditarPerfilForm() {
 
   const onSubmit = (data) => {
     console.log(data);
-    // Logica
+    
   };
 
   return (

@@ -61,7 +61,7 @@ function App() {
 
             <Route element={<EditarPerfil />} path="/editarperfil" />
             <Route element={<NovaVaga />} path="/lab/novaVaga" />
-            <Route element={<EditarPerfil />} path="/editar" />
+            <Route element={<EditarPerfil />} path="/editar/:id" />
             <Route element={<VisualizarVaga />} path="/perfil/vaga/:lab/:vaga" />
             <Route element={<EditarVaga />} path="/perfil/editar_vaga/:lab/:vaga" />
 
