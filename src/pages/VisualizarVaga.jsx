@@ -17,6 +17,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 const NovaVaga = () => {
 
   const [data, setData] = React.useState({});
+  const [interesse, setInteresse] = React.useState([]);
   const { lab, vaga } = useParams();
 
   const { user } = React.useContext(AuthContext);
@@ -25,7 +26,6 @@ const NovaVaga = () => {
   const getVagaData = async () => {
     if (user != null) {
       try {
-        console.log(lab+"/"+vaga);
         const res = await axios.get(
           `http://localhost:8800/api/vagas/${lab}/${vaga}`,
         );
@@ -33,8 +33,51 @@ const NovaVaga = () => {
       } catch (err) {
         toast.error(err.message);
       }
+      getInteresseUser();
     }
   };
+
+  const getInteresseUser = async () => {
+    if (user != null) {
+      try {
+        const res = await axios.get(
+          `http://localhost:8800/api/candidaturas/${vaga}/${user._id}`,
+        );
+        if (res.data[0] != undefined) {
+          setInteresse(res.data);
+          console.log(res.data);
+        }
+        
+      } catch (err) {
+        toast.error(err.message);
+      }
+    }
+  };
+
+  const demonstrarInteresse = async () => {
+    if (user != null) {
+      try {
+        const info = {
+          user: user._id,
+          vaga: vaga,
+        };
+        if (interesse && interesse.length == 0) {
+          const res = await axios.post(
+            `http://localhost:8800/api/candidaturas`,
+            info
+          );
+          setInteresse(res.data);
+        } else {
+          await axios.delete(`http://localhost:8800/api/candidaturas/${interesse[0]._id}`);
+          setInteresse([]);
+        }
+        window.location.reload();
+      } catch (err) {
+        toast.error(err.message);
+      }
+    }
+  };
+  
 
   const handleClick = async () => {
     navigate(`/perfil/editar_vaga/${lab}/${vaga}`);
@@ -141,8 +184,8 @@ const NovaVaga = () => {
                   Deletar vaga
                 </Button>
               : 
-                <Button variant="contained" size="large">
-                  Demonstrar interesse
+                <Button variant="contained" size="large" onClick={demonstrarInteresse}>
+                  { interesse && interesse.length == 0 ? "Demonstrar Interesse" : "Cancelar" }
                 </Button>
               }
               { user && user.isLab ? 

@@ -3,13 +3,35 @@ import { useForm, Controller } from 'react-hook-form';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
+import { AuthContext } from '../context/authContext';
+import { toast } from 'react-toastify';
+import axios from 'axios';
 
 const NovaVagaForm = () => {
+  const { user } = React.useContext(AuthContext);
   const { handleSubmit, control } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
-    // logica
+  const onSubmit = async (data) => {
+    if (user == null) {
+      console.log("Erro: Você não tem permissão para adicionar certificados.");
+      return;
+    }
+  
+    try {
+      const info = {
+        "user": user._id,
+        "link_certificado": data.link,
+        "titulo": data.title,
+        "area": data.description,
+        "duracao": parseInt(data.duracao)
+      };
+  
+      const res = await axios.post(`http://localhost:8800/api/certificados/${user._id}`, info);
+      toast.success("Cetificado adicionado com sucesso!");
+      window.location.reload();
+    } catch (err) {
+      toast.error(err.message);
+    }
   };
 
   return (
@@ -30,6 +52,7 @@ const NovaVagaForm = () => {
                 label="Título"
                 fullWidth
                 variant="outlined"
+                required
               />
             )}
           />
@@ -43,8 +66,10 @@ const NovaVagaForm = () => {
               <TextField
                 {...field}
                 label="Duração"
+                type='number'
                 fullWidth
                 variant="outlined"
+                required
               />
             )}
           />
@@ -57,9 +82,10 @@ const NovaVagaForm = () => {
             render={({ field }) => (
               <TextField
                 {...field}
-                label="Descrição"
+                label="Area"
                 fullWidth
                 variant="outlined"
+                required
               />
             )}
           />
@@ -75,6 +101,7 @@ const NovaVagaForm = () => {
                 label="Link do certificado"
                 fullWidth
                 variant="outlined"
+                required
               />
             )}
           />

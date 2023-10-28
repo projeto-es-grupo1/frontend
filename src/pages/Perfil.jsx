@@ -20,7 +20,8 @@ import CardCertificacao from '../components/CardCertificacao';
 import CardVaga from '../components/CardVaga';
 const Institution = () => {
   const [data, setData] = React.useState({});
-
+  const [certificados, setCertificados] = React.useState({});
+  
   const { user } = React.useContext(AuthContext);
 
   const getUserData = async () => {
@@ -38,12 +39,22 @@ const Institution = () => {
     // modifyLoad({ type: "LOADING_END" });
   };
 
-  React.useEffect(() => {
-    getUserData();
-  }, [user]);
+  const getUserCertificados = async () => {
+    if (user != null) {
+      try {
+        const res = await axios.get(
+          `http://localhost:8800/api/certificados/${user._id}`,
+        );
+        setCertificados(res.data);
+      } catch (err) {
+        toast.error(err.message);
+      }
+    }
+  };
 
   React.useEffect(() => {
     getUserData();
+    getUserCertificados();
   }, [user]);
 
   return (
@@ -138,16 +149,14 @@ const Institution = () => {
               </Box>
 
               <Box style={{ display: 'flex', flexDirection: 'column' }}>
-                {/* {vagas && vagas.length > 0 ? (
-                  vagas.map((vaga, index) => (
-                    <CardVaga vaga={vaga} key={index} />
+                {certificados && certificados.length > 0 ? (
+                  certificados.map((certificado, index) => (
+                    <CardCertificacao certificado={certificado} key={index} />
                   ))
                 ) : (
                   <Typography variant="body2">Nenhuma vaga publicada ainda.</Typography>
-                )} */}
+                )}
               </Box>
-              <CardCertificacao />
-              <CardCertificacao />
             </Card>
           </Box>
         </Container>

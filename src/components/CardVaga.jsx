@@ -14,6 +14,7 @@ import { toast } from 'react-toastify';
 const CardVaga = ({ vaga }) => {
 
   const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
 
   const handleClick = () => {
     navigate(`/perfil/vaga/${vaga.lab}/${vaga._id}`);
