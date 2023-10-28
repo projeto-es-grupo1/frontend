@@ -1,19 +1,19 @@
 import { Box, Button, Card, Typography } from '@mui/material';
-import { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import ThumbsUpSvg from '../assets/ThumbsUpSvg';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/authContext';
 
 // eslint-disable-next-line react/prop-types
-const CardVaga = ({ numero }) => {
+const CardVaga = ({ vaga }) => {
   const [like, setLike] = useState(false);
   const [likes, setLikes] = useState(25);
 
-  const handleLikeClick = () => {
-    if (like) {
-      setLikes(likes - 1);
-    } else {
-      setLikes(likes + 1);
-    }
-    setLike(!like);
+  const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
+
+  const handleClick = () => {
+    navigate(`/perfil/vaga/${user._id}/${vaga._id}`);
   };
 
   return (
@@ -28,18 +28,16 @@ const CardVaga = ({ numero }) => {
       }}
     >
       <Typography variant="h6" style={{ gridColumn: '1/3' }}>
-        {numero} FrontEnd Developer with React and Vite
+        { vaga.titulo }
       </Typography>
       <Typography
         variant="body2"
         style={{ gridColumn: '1/3', textAlign: 'justify' }}
       >
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud.
+        { vaga.descricao }
       </Typography>
       <Typography variant="subtitle2" style={{ gridColumn: '3/3' }}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elie.
+        { vaga.localizacao }
       </Typography>
       <Box
         style={{
@@ -48,14 +46,7 @@ const CardVaga = ({ numero }) => {
           justifyContent: 'space-between',
         }}
       >
-        <Button variant="contained">Enviar Curriculo</Button>
-        <Box
-          onClick={handleLikeClick}
-          style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
-        >
-          {likes}
-          <ThumbsUpSvg color={like ? '#18D0C5' : '#595959'} />
-        </Box>
+        <Button variant="contained" onClick={handleClick}>Ver Vaga</Button>
       </Box>
     </Card>
   );

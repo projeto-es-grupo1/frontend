@@ -17,12 +17,44 @@ import Header from '../components/Header';
 import { AuthContext } from '../context/authContext';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
-const NovaVaga = () => {
-  const { dispatch, user } = React.useContext(AuthContext);
+const EditarVaga = () => {
+  const { user } = React.useContext(AuthContext);
   const navigate = useNavigate();
+
+  const [data, setData] = React.useState({});
+  const { lab, vaga } = useParams();
+
+
+  const getVagaData = async () => {
+    if (user != null) {
+      try {
+        const res = await axios.get(
+          `http://localhost:8800/api/vagas/${lab}/${vaga}`,
+        );
+        setData(res.data[0]);
+        setValue('lab_titulo', res.data[0].titulo);
+        setValue('localizacao', res.data[0].localizacao);
+        setValue('data_expiracao', res.data[0].data_expiracao);
+        setValue('qtd_vagas', res.data[0].qtd_vagas);
+        setValue('area', res.data[0].area);
+        setValue('descricao', res.data[0].descricao);
+        setValue('valor', res.data[0].bolsa);
+        setValue('carga_horaria', res.data[0].carga_horaria);
+        setValue('requeridas', res.data[0].habilidades_requeridas);
+        setValue('diferenciais', res.data[0].habilidades_sugeridas);
+        console.log(res.data[0]);
+      } catch (err) {
+        toast.error(err.message);
+      }
+    }
+  };
+
+  React.useEffect(() => {
+    getVagaData();
+  }, [lab, vaga, user]);
 
   const { handleSubmit, control, reset, watch, setValue } = useForm();
   const requeridas = watch('requeridas') || [];
@@ -67,9 +99,7 @@ const NovaVaga = () => {
         carga_horaria: data.carga_horaria
       };
 
-
-  
-      const res = await axios.post("http://localhost:8800/api/vagas", info);
+      await axios.put(`http://localhost:8800/api/vagas/${vaga}`, info);
       toast.success("Vaga criada com sucesso!");
       navigate("/perfil");
     } catch (err) {
@@ -207,7 +237,7 @@ const NovaVaga = () => {
                     render={({ field }) => (
                       <TextField
                         {...field}
-                        label="Valor"
+                        label="valor"
                         fullWidth
                         variant="outlined"
                         InputProps={{
@@ -343,4 +373,4 @@ const NovaVaga = () => {
   );
 };
 
-export default NovaVaga;
+export default EditarVaga;

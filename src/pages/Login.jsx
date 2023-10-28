@@ -28,12 +28,13 @@ const Login = () => {
       try {
           const info = {
               "username": `${email}`,
-              "password": `${senha}`
+              "password": `${senha}`,
           }
 
           const res = await axios.post("http://localhost:8800/api/auth/login", info);
+          res.data.details.isLab = res.data.isLab;
           dispatch({ type: "LOGIN_SUCCESS", payload: res.data.details });
-          navigate("/feed")
+          navigate("/feed");
           toast.success("You are logged in!")
       } catch (err) {
           console.log(err.message);

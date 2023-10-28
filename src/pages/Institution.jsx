@@ -4,6 +4,7 @@ import {
   Card,
   Container,
   CssBaseline,
+  Grid,
   Link,
   Typography,
 } from '@mui/material';
@@ -13,11 +14,55 @@ import FormModal from '../components/FormModal';
 import NovaVagaForm from '../components/NovaVagaForm';
 import FormModalLink from '../components/FormModalLink';
 import EditarInstituicaoForm from '../components/EditarInstituicaoForm';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/authContext';
+import React, { useState } from 'react';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import CardVaga from '../components/CardVaga';
 
 const Institution = () => {
-  const handleClick = (event) => {
-    event.preventDefault();
+  const { user } = React.useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const [vagas, setVagas] = useState();
+  const [info, setInfo] = useState();
+
+  const handleClick = () => {
+    navigate("/lab/novavaga");
   };
+
+  const getLabVagaData = async () => {
+    if (user != null && user.isLab) {
+      try {
+        const res = await axios.get(
+          `http://localhost:8800/api/vagas/${user._id}`,
+        );
+        setVagas(res.data);
+      } catch (err) {
+        toast.error(err.message);
+      }
+    }
+  };
+
+  const getLabData = async () => {
+    if (user != null && user.isLab) {
+      try {
+        const res = await axios.get(
+          `http://localhost:8800/api/perfil/${user._id}`,
+        );
+        console.log(res.data[0]);
+        setInfo(res.data[0]);
+      } catch (err) {
+        toast.error(err.message);
+      }
+    }
+  };
+
+  React.useEffect(() => {
+    getLabVagaData();
+    getLabData();
+  }, [user]);
 
   return (
     <>
@@ -61,7 +106,7 @@ const Institution = () => {
                   }}
                 />
                 <Typography variant="h5" sx={{ marginBottom: '16px' }}>
-                  Nome Completo da Instituição
+                  { info && info.nome ? info.nome : "Adicione o nome!" }
                 </Typography>
                 <Typography
                   variant="body2"
@@ -71,15 +116,13 @@ const Institution = () => {
                     color: '#494949',
                   }}
                 >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation.
+                  { info && info.motivacao ? info.motivacao : "Adicione a descrição!" }
                 </Typography>
                 <Box
                   sx={{ display: 'flex', gap: '10px', alignItems: 'center' }}
                 >
                   <Typography variant="subtitle1" sx={{ maxWidth: '46ch' }}>
-                    Localização da instituição
+                    { info && info.mora ? info.more : "Adicione o localização!" }
                   </Typography>
                   <div
                     style={{
@@ -90,7 +133,7 @@ const Institution = () => {
                     }}
                   ></div>
                   <Link href="#" underline="hover">
-                    {'Informação de contato'}
+                    { info && info.email ? info.email : "Adicione o email!" }
                   </Link>
                 </Box>
               </Box>
@@ -106,7 +149,7 @@ const Institution = () => {
               sx={{ boxShadow: 4 }}
               style={{
                 display: 'flex',
-                flexDirection: 'row',
+                flexDirection: 'column',
                 padding: '32px 50px',
                 width: '100%',
               }}
@@ -121,14 +164,30 @@ const Institution = () => {
               >
                 <Typography variant="h6">Vagas Publicadas</Typography>
 
-                <FormModal
-                  botao={'Publicar Vaga'}
-                  formsTitle={'Nova Vaga'}
-                  forms={<NovaVagaForm />}
-                />
+                <Grid item xs={12}>
+                  <Button
+                    sx={{ marginTop: '6px' }}
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                    fullWidth
+                    onClick={handleClick}
+                  >
+                    Publicar vaga
+                  </Button>
+                </Grid>
               </Box>
-
-              {/* renderizar cards aqui */}
+              <Box style={{ display: 'flex', flexDirection: 'column' }}>
+                {vagas && vagas.length > 0 ? (
+                  vagas.map((vaga, index) => (
+                    <CardVaga vaga={vaga} key={index} />
+                  ))
+                ) : (
+                  <Typography variant="body2">Nenhuma vaga publicada ainda.</Typography>
+                )}
+              </Box>
+              
             </Card>
           </Box>
         </Container>

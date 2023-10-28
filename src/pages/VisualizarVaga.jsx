@@ -9,8 +9,53 @@ import {
 } from '@mui/material';
 import Header from '../components/Header';
 import { display } from '@mui/system';
+import { AuthContext } from '../context/authContext';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const NovaVaga = () => {
+
+  const [data, setData] = React.useState({});
+  const { lab, vaga } = useParams();
+
+  const { user } = React.useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const getVagaData = async () => {
+    if (user != null) {
+      try {
+        const res = await axios.get(
+          `http://localhost:8800/api/vagas/${lab}/${vaga}`,
+        );
+        setData(res.data[0]);
+      } catch (err) {
+        toast.error(err.message);
+      }
+    }
+  };
+
+  const handleClick = async () => {
+    navigate(`/perfil/editar_vaga/${lab}/${vaga}`);
+  };
+
+  const deletarVaga = async () => {
+    if (user != null && user.isLab) {
+      try {await axios.delete(
+          `http://localhost:8800/api/vagas/${lab}/${vaga}`,
+        );
+        toast.success("Vaga deletada!");
+        navigate("/perfil");
+      } catch (err) {
+        toast.error(err.message);
+      }
+    }
+  };
+
+  React.useEffect(() => {
+    getVagaData();
+  }, [lab, vaga, user]);
+
   return (
     <>
       <CssBaseline />
@@ -35,15 +80,15 @@ const NovaVaga = () => {
                 marginBottom: '2px',
               }}
             >
-              <Typography variant="h4">Bolsista Pibic</Typography>
-              <Typography variant="body1">20 Horas/Semana</Typography>
+              <Typography variant="h4">{ data.titulo }</Typography>
+              <Typography variant="body1">{ data.carga_horaria } Horas/Semana</Typography>
             </Box>
             <Typography
               sx={{ marginBottom: '10px' }}
               variant="subtitle2"
               fontSize="1rem"
             >
-              Laboratorio de sistemas integrados - LSI
+              { data && data.localizacao ? data.localizacao : "Localização não definida!" }
             </Typography>
             <Box
               sx={{
@@ -53,7 +98,7 @@ const NovaVaga = () => {
                 marginBottom: '16px',
               }}
             >
-              <Typography variant="body1">3 vagas</Typography>
+              <Typography variant="body1">{ data.qtd_vagas } vagas</Typography>
               <div
                 style={{
                   height: '6px',
@@ -62,10 +107,10 @@ const NovaVaga = () => {
                   borderRadius: '100px',
                 }}
               />
-              <Typography variant="body1">R$ 700,00</Typography>
+              <Typography variant="body1">R$ {data.bolsa }</Typography>
             </Box>
             <Typography sx={{ marginBottom: '16px' }} variant="body1">
-              Área
+              Área: { data && data.area ? data.area : "Área não definida!" }
             </Typography>
 
             <Typography
@@ -73,36 +118,40 @@ const NovaVaga = () => {
               variant="body2"
               color="#6B6A6B"
             >
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-              accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
-              quae ab illo inventore veritatis et quasi architecto beatae vitae
-              dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit
-              aspernatur aut odit aut fugit, sed quia consequuntur magni dolores
-              eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam
-              est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci
-              velit, sed quia non numquam eius modi tempora incidunt ut labore
-              et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima
-              veniam, quis nostrum exercitationem ullam corporis suscipit
-              laboriosam, nisi ut aliquid.
+              { data.descricao }
             </Typography>
             <Typography variant="subtitle2" fontSize="1.05rem">
               Habilidades requeridas:
             </Typography>
             <Typography sx={{ marginBottom: '24px' }}>
-              ReactJs | NodeJs | PostgreSql | Docker | Git
+              { data && data.habilidades_requeridas && data.habilidades_requeridas.length > 0 ? data.habilidades_requeridas.join(" | ") : "As habilidades requeridas não foram definidas!" }
             </Typography>
             <Typography variant="subtitle1" fontSize="1.05rem">
               Habilidades diferenciais:
             </Typography>
             <Typography sx={{ marginBottom: '64px' }}>
-              Figma | Modelagem de banco de dados | Analise de dados
+              { data && data.habilidades_sugeridas && data.habilidades_sugeridas.length > 0 ? data.habilidades_sugeridas.join(" | ") : "As habilidades sugeridas não foram definidas!"}
             </Typography>
             <Box
               sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}
             >
-              <Button variant="contained" size="large">
-                Enviar curriculo
-              </Button>
+              { user && user.isLab ? 
+                <Button variant="contained" size="large" onClick={deletarVaga}>
+                  Deletar vaga
+                </Button>
+              : 
+                <Button variant="contained" size="large">
+                  Demonstrar interesse
+                </Button>
+              }
+              { user && user.isLab ? 
+                <Button style={{marginLeft: "1rem"}} variant="contained" size="large" onClick={handleClick}>
+                  Atualizar vaga
+                </Button>
+              : 
+                <></>
+              }
+              
             </Box>
           </Card>
         </Container>

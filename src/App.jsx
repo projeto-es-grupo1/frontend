@@ -10,6 +10,7 @@ import AddCertificado from './pages/AddCertificado';
 import EditarPerfil from './pages/EditarPerfil';
 import NovaVaga from './pages/NovaVaga';
 import VisualizarVaga from './pages/VisualizarVaga';
+import EditarVaga from './pages/EditarVaga';
 
 function App() {
   const { user } = useContext(AuthContext);
@@ -24,16 +25,25 @@ function App() {
             ) : (
               <Route element={<Login />} path="/login" />
             )}
+
             {user != null ? (
               <Route element={<Institution />} path="/perfilorg" />
             ) : (
               <Route element={<Login />} path="/login" />
             )}
+
             {user != null && !user.isLab ? (
               <Route element={<Perfil />} path="/perfil" />
             ) : (
               <Route element={<Login />} path="/login" />
             )}
+
+            {user != null && user.isLab ? (
+              <Route element={<Institution />} path="/perfil" />
+            ) : (
+              <Route element={<Login />} path="/login" />
+            )}
+
             {user != null ? (
               <Route
                 element={<AddCertificado />}
@@ -42,6 +52,7 @@ function App() {
             ) : (
               <Route element={<Login />} path="/perfil/add_certificado" />
             )}
+
             {user != null ? (
               <Route element={<Feed />} path="*" />
             ) : (
@@ -49,8 +60,9 @@ function App() {
             )}
 
             <Route element={<EditarPerfil />} path="/editarperfil" />
-            <Route element={<NovaVaga />} path="/novaVaga" />
-            <Route element={<VisualizarVaga />} path="/vaga" />
+            <Route element={<NovaVaga />} path="/lab/novaVaga" />
+            <Route element={<VisualizarVaga />} path="/perfil/vaga/:lab/:vaga" />
+            <Route element={<EditarVaga />} path="/perfil/editar_vaga/:lab/:vaga" />
 
             <Route element={<Register />} path="/register" />
             <Route element={<Login />} path="/login" />
