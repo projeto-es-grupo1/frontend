@@ -27,20 +27,14 @@ function App() {
               <Route element={<Login />} path="/login" />
             )}
 
-            {user != null ? (
-              <Route element={<Institution />} path="/perfilorg" />
-            ) : (
-              <Route element={<Login />} path="/login" />
-            )}
-
-            {user != null && !user.isLab ? (
-              <Route element={<Perfil />} path="/perfil" />
-            ) : (
-              <Route element={<Login />} path="/login" />
-            )}
-
             {user != null && user.isLab ? (
               <Route element={<Institution />} path="/perfil" />
+            ) : (
+              <Route element={<Login />} path="/login" />
+            )}
+
+            {user != null ? (
+              <Route element={<Perfil />} path="/perfil" />
             ) : (
               <Route element={<Login />} path="/login" />
             )}
@@ -55,17 +49,42 @@ function App() {
             )}
 
             {user != null ? (
-              <Route element={<Feed />} path="*" />
+              <Route element={<Feed />} path="/" />
             ) : (
-              <Route element={<Login />} path="/*" />
+              <Route element={<Login />} path="/" />
             )}
 
-            <Route element={<EditarPerfil />} path="/editarperfil" />
-            <Route element={<PerfilPublico />} path="/perfil/:link/:id" />
-            <Route element={<NovaVaga />} path="/lab/novaVaga" />
-            <Route element={<EditarPerfil />} path="/editar/:id" />
+            {user != null ? (
+              <Route element={<Feed />} path="*" />
+            ) : (
+              <Route element={<Login />} path="*" />
+            )}
+
+            {user != null && !user.isLab ? (
+              <Route element={<EditarPerfil />} path="/editar/:id" />
+            ) : (
+              <Route element={<Login />} path="/editar/:id" />
+            )}
+
+            {user != null ? (
+              <Route element={<PerfilPublico />} path="/perfil/:link/:id" />
+            ) : (
+              <Route element={<Login />} path="/perfil/:link/:id" />
+            )}
+
+            {user != null && user.isLab ? (
+              <Route element={<NovaVaga />} path="/lab/novaVaga" />
+            ) : (
+              <Route element={<Login />} path="/lab/novaVaga" />
+            )}
+            
             <Route element={<VisualizarVaga />} path="/perfil/vaga/:lab/:vaga" />
-            <Route element={<EditarVaga />} path="/perfil/editar_vaga/:lab/:vaga" />
+
+            {user != null && user.isLab ? (
+              <Route element={<EditarVaga />} path="/perfil/editar_vaga/:lab/:vaga" />
+            ) : (
+              <Route element={<Login />} path="/perfil/editar_vaga/:lab/:vaga" />
+            )}
 
             <Route element={<Register />} path="/register" />
             <Route element={<Login />} path="/login" />

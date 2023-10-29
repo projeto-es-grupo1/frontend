@@ -35,6 +35,7 @@ const Login = () => {
           res.data.details.isLab = res.data.isLab;
           dispatch({ type: "LOGIN_SUCCESS", payload: res.data.details });
           navigate("/feed");
+          window.location.reload();
           toast.success("You are logged in!")
       } catch (err) {
           console.log(err.message);

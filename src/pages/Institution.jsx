@@ -97,14 +97,21 @@ const Institution = () => {
               }}
             >
               <Box style={{ display: 'flex', flexDirection: 'column' }}>
-                <Avatar
-                  sx={{
-                    width: 126,
-                    height: 126,
-                    backgroundColor: 'grey',
-                    marginBottom: '28px',
-                  }}
-                />
+                <Box style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: '2rem' }}>
+                  <Avatar
+                    sx={{
+                      width: 126,
+                      height: 126,
+                      backgroundColor: 'grey',
+                      marginBottom: '28px',
+                    }}
+                  />
+                  <FormModalLink
+                    link={'Editar Perfil'}
+                    formsTitle={'Editar Perfil'}
+                    forms={<EditarInstituicaoForm perfil={ info } />}
+                  />
+                </Box>
                 <Typography variant="h5" sx={{ marginBottom: '16px' }}>
                   { info && info.nome ? info.nome : "Adicione o nome!" }
                 </Typography>
@@ -112,8 +119,10 @@ const Institution = () => {
                   variant="body2"
                   sx={{
                     marginBottom: '10px',
-                    maxWidth: '46ch',
-                    color: '#494949',
+                    maxWidth: '90%',
+                    margin: 'auto',
+                    paddingBottom: '1rem',
+                    color: '#494949'
                   }}
                 >
                   { info && info.motivacao ? info.motivacao : "Adicione a descrição!" }
@@ -137,12 +146,6 @@ const Institution = () => {
                   </Link>
                 </Box>
               </Box>
-
-              <FormModalLink
-                link={'Editar Perfil'}
-                formsTitle={'Editar Perfil'}
-                forms={<EditarInstituicaoForm perfil={ info } />}
-              />
             </Card>
 
             <Card

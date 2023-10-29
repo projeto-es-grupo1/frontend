@@ -4,7 +4,7 @@ import AccountMenu from './Profile';
 
 const Header = () => {
   return (
-    <Box style={{ display: 'flex', justifyContent: 'center', height: '140px' }}>
+    <Box style={{ display: 'flex', justifyContent: 'center', height: '140px', marginBottom: '1rem'}}>
       <Box style={{ width: '100vw', height: '65px', backgroundColor: '#fff' }}>
         <Container maxWidth="md">
           <Box
