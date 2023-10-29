@@ -13,10 +13,12 @@ import { AuthContext } from '../context/authContext';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
+import CardUser from '../components/CardUser';
 
 const NovaVaga = () => {
 
   const [data, setData] = React.useState({});
+  const [candidaturas, setCandidaturas] = React.useState({});
   const [interesse, setInteresse] = React.useState([]);
   const { lab, vaga } = useParams();
 
@@ -47,6 +49,20 @@ const NovaVaga = () => {
           setInteresse(res.data);
           console.log(res.data);
         }
+        
+      } catch (err) {
+        toast.error(err.message);
+      }
+    }
+  };
+
+  const getUserstInteressados = async () => {
+    if (user && user.isLab) {
+      try {
+        const res = await axios.get(
+          `http://localhost:8800/api/candidaturas/ordenadas/${vaga}`,
+        );
+        setCandidaturas(res.data);
         
       } catch (err) {
         toast.error(err.message);
@@ -98,6 +114,7 @@ const NovaVaga = () => {
 
   React.useEffect(() => {
     getVagaData();
+    getUserstInteressados();
   }, [lab, vaga, user]);
 
   return (
@@ -207,8 +224,27 @@ const NovaVaga = () => {
               
             </Box>
           </Card>
+          
+        
         </Container>
+        { user && user.isLab && user._id == lab ? 
+          <Container maxWidth="md">
+            <Card sx={{ boxShadow: 4 }} style={{ padding: '64px', marginTop: '1rem' }}>
+                <Typography variant="h4">Usuários interessados (Por ranking)</Typography>
+                {candidaturas && candidaturas.length > 0 ? (
+                  candidaturas.map((candidatura, index) => (
+                    <CardUser perfil={candidatura.user} key={index} />
+                  ))
+                ) : (
+                  <Typography variant="body2">Nenhuma vaga publicada ainda.</Typography>
+                )}
+            </Card>
+          </Container>
+        :
+          <></>
+        }
       </Box>
+      
     </>
   );
 };

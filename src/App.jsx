@@ -11,6 +11,7 @@ import EditarPerfil from './pages/EditarPerfil';
 import NovaVaga from './pages/NovaVaga';
 import VisualizarVaga from './pages/VisualizarVaga';
 import EditarVaga from './pages/EditarVaga';
+import PerfilPublico from './pages/PerfilPublico';
 
 function App() {
   const { user } = useContext(AuthContext);
@@ -60,6 +61,7 @@ function App() {
             )}
 
             <Route element={<EditarPerfil />} path="/editarperfil" />
+            <Route element={<PerfilPublico />} path="/perfil/:link/:id" />
             <Route element={<NovaVaga />} path="/lab/novaVaga" />
             <Route element={<EditarPerfil />} path="/editar/:id" />
             <Route element={<VisualizarVaga />} path="/perfil/vaga/:lab/:vaga" />

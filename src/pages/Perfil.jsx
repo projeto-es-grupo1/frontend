@@ -100,7 +100,7 @@ const Institution = () => {
                   }}
                 />
                 <Typography variant="h5" sx={{ marginBottom: '16px' }}>
-                  {data.nome}
+                  {data && data.nome ? data.nome : "Carregando"}
                 </Typography>
                 <Typography variant="subtitle1" sx={{ marginBottom: '10px' }}>
                   {data.habilidades && data.habilidades.length > 0
@@ -157,7 +157,7 @@ const Institution = () => {
                     <CardCertificacao certificado={certificado} key={index} />
                   ))
                 ) : (
-                  <Typography variant="body2">Nenhuma vaga publicada ainda.</Typography>
+                  <Typography variant="body2">Nenhum certificado publicado ainda.</Typography>
                 )}
               </Box>
             </Card>
